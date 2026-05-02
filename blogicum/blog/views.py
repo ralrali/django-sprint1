@@ -44,16 +44,17 @@ posts = [
     },
 ]
 
+POSTS_DICT = {post["id"]: post for post in posts}
+
 
 def index(request):
     return render(request, "blog/index.html", {"posts": posts[::-1]})
 
 
 def post_detail(request, id):
-    existing_ids = {post["id"] for post in posts}
-    if id not in existing_ids:
+    if id not in POSTS_DICT:
         raise Http404(f"Пост с id={id} не найден")
-    post = next(p for p in posts if p["id"] == id)
+    post = POSTS_DICT[id]
     return render(request, "blog/detail.html", {"post": post})
 
 
